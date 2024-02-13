@@ -1,97 +1,63 @@
 <script setup>
-import {ref, onBeforeMount, computed} from 'vue'
-import Pagination from 'v-pagination-3';
+import {ref, onBeforeMount} from 'vue'
 import axios from "axios";
 
-const stories = ref([])
 const pageSize = ref(4)
+const allStories = ref([])
 const visibleStories = ref([])
-const currentPage = ref(1)
-onBeforeMount(async () => {
-  await fetchApiData()
-})
+const currentPage = ref(0)
+const totalPages = ref(0)
 
 const fetchApiData = async () => {
   await axios.get(import.meta.env.VITE_API_BASE_URL+'/topstories.json')
       .then(res => {
-        stories.value = res.data.slice(0,10)
-        localStorage.setItem('stories', JSON.stringify(stories.value));
+        allStories.value = res.data.slice(0,10)
+        totalPages.value = Math.ceil(allStories.value.length / pageSize.value)
       }).catch((err)=>{
         console.log(err)
       })
 }
 
 
-const paginatedListData = (pageNumber = 1) => {
-  const allStories = JSON.parse(localStorage.getItem('stories'));
-  visibleStories.value = allStories.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
+const paginatedListData = () => {
+  visibleStories.value = allStories.value.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
 }
-
-paginatedListData();
-
-const totalPages = computed(()=>{
-  return Math.ceil(stories.value.length / pageSize.value)
-})
 
 const updatePage = (pageNumber)=>{
-  console.log(totalPages)
-  console.log(pageNumber)
-  if(totalPages < pageNumber || pageNumber < 1){
-    return false
+  if(totalPages.value <= pageNumber){
+    currentPage.value = totalPages.value - 1;
   } else {
-    currentPage.value = pageNumber;
-    console.log(currentPage.value)
+    currentPage.value = pageNumber -1;
   }
+
+  paginatedListData();
 }
 
-
-// const updatePage = (pageNumber)=>{
-//   currentPage.value = pageNumber;
-//   console.log(currentPage.value)
-//   updateVisibleStories();
-// }
-// const updateVisibleStories = ()=>{
-//   const allStories = JSON.parse(localStorage.getItem('stories'));
-//   let initialSortingTodos = allStories.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
-//   visibleStories.value = initialSortingTodos
-//   if(visibleStories.value.length == 0 && currentPage.value > 0){
-//     updatePage(currentPage.value - 1);
-//   }
-// }
-// updateVisibleStories()
-
-// console.log("total page",totalPages.value)
-//
-// const showpreviousLink = computed(()=>{
-//   return currentPage.value == 0 ? false : true
-// })
-// const showNextLink = computed(()=>{
-//   return currentPage.value == (totalPages.value - 1 ) ? false : true
-// })
+onBeforeMount(async () => {
+  await fetchApiData();
+  paginatedListData();
+})
 
 </script>
 <template>
-    <div>
-      <h2>Response</h2>
-      <div class="container mx-auto">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-              <router-link v-for="(story,index) in visibleStories" :key="index" class="text-xs relative flex justify-center border-2 cursor-pointer border-gray-300 rounded-xl p-6 bg-gray-100" :to="{ name: 'story', params: { id: story } }">
-              {{story}}
-              <span class="absolute right-2 top-1">{{index + 1}}</span>
-            </router-link>
-        </div>
-<!--        <pagination v-model="page" :records="stories.value" :per-page="pageSize" @paginate="myCallback"/>-->
-<!--      </div>-->
-        {{totalPages}}
+  <div>
+    <h2>Response</h2>
+    <div class="container mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
+        <router-link v-for="(story,index) in visibleStories" :key="index" class="text-xs relative flex justify-center border-2 cursor-pointer border-gray-300 rounded-xl p-6 bg-gray-100" :to="{ name: 'story', params: { id: story } }">
+          {{story}}
+          <span class="absolute right-2 top-1">{{index + 1}}</span>
+        </router-link>
+      </div>
+      <!--        <pagination v-model="page" :records="stories.value" :per-page="pageSize" @paginate="myCallback"/>-->
+      <!--      </div>-->
       <div v-if="totalPages > 0" >
         <div style="display: flex; justify-content: center;">
-          <button v-if="showpreviousLink" @click="updatePage(currentPage - 1)">previous</button>
           <div v-for="page in totalPages" @click="updatePage(page)" style="padding: 5px; background: #ddd; margin-right: 2px; cursor: pointer;">{{page}}</div>
-          <button  @click="updatePage(currentPage + 1)">Next</button>
         </div>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 
 <style></style>
