@@ -1,6 +1,8 @@
-<script setup></script>
+<script setup>
+defineProps('comments')
+</script>
 <template>
   <div>
-    comments
+    {{comments}}
   </div>
 </template>

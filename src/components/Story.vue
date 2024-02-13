@@ -10,7 +10,13 @@ onBeforeMount(() => {
 
     axios.get(import.meta.env.VITE_API_BASE_URL +`/item/${id}.json/`)
       .then(res => {
-        comments.value = res.data.kids
+        console.log("response",res.data)
+        res.data.kids.map((data)=>{
+          axios.get(import.meta.env.VITE_API_BASE_URL +`/item/${data}.json/`)
+              .then((res)=>{
+                comments.value.push(res)
+              })
+        })
         Object.assign(story,res.data)
         console.log(story)
       })
@@ -25,8 +31,9 @@ onBeforeMount(() => {
   Hello this is a story
   {{story}}
   <br>
-  <router-link v-for="(comment,index) in comments" :key="index" class="text-xs relative flex justify-center border-2 cursor-pointer border-gray-300 rounded-xl p-6 bg-gray-100" :to="{ name: 'comments', params: { id: comment } }">
-    {{comment}}
+  {{comments.length}}
+  <router-link v-for="(comment,index) in comments" :key="index" class="text-xs relative flex justify-center border-2 cursor-pointer border-gray-300 rounded-xl p-6 bg-gray-100" :to="{ name: 'comments', params: { id: comment.data.id } }">
+    {{comment.data.text}}
   </router-link>
 </template>
 
