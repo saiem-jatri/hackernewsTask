@@ -5,11 +5,12 @@ import axios from 'axios'
 const route = useRoute()
 const id = route.params.id
 const story = reactive({})
-// const comments = ref([])
+const comments = ref([])
 onBeforeMount(() => {
 
-    axios.get(`https://hacker-news.firebaseio.com/v0/item/${id}.json/`)
+    axios.get(import.meta.env.VITE_API_BASE_URL +`/item/${id}.json/`)
       .then(res => {
+        comments.value = res.data.kids
         Object.assign(story,res.data)
         console.log(story)
       })
@@ -23,6 +24,10 @@ onBeforeMount(() => {
 <template>
   Hello this is a story
   {{story}}
+  <br>
+  <router-link v-for="(comment,index) in comments" :key="index" class="text-xs relative flex justify-center border-2 cursor-pointer border-gray-300 rounded-xl p-6 bg-gray-100" :to="{ name: 'comments', params: { id: comment } }">
+    {{comment}}
+  </router-link>
 </template>
 
 <style></style>

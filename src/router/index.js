@@ -3,6 +3,7 @@ import Home from '../components/Home.vue'
 import Stories from '../components/StoriesNew.vue'
 import Story from '../components/Story.vue'
 import Sidebar from '../components/Sidebar.vue'
+import Comments from '../components/Comments.vue'
 
 const routes = [
     {
@@ -23,6 +24,13 @@ const routes = [
             LeftSideBar: Sidebar
         },
         name: 'story',
+    },
+    {
+        path: '/comments/:id/:id', components: {
+            default: Comments,
+            LeftSideBar: Sidebar
+        },
+        name: 'comments',
     }
 ]
 
