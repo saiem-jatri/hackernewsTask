@@ -6,42 +6,68 @@ import axios from "axios";
 const stories = ref([])
 const pageSize = ref(4)
 const visibleStories = ref([])
-const currentPage = ref(0)
+const currentPage = ref(1)
 onBeforeMount(async () => {
- await axios.get(import.meta.env.VITE_API_BASE_URL+'/topstories.json')
-      .then(res => {
-         stories.value = res.data.slice(0,10)
-        localStorage.setItem('stories', JSON.stringify(stories.value));
-      }).catch((err)=>{
-    console.log(err)
-  })
+  await fetchApiData()
 })
 
-const updatePage = (pageNumber)=>{
-  currentPage.value = pageNumber;
-  console.log(currentPage.value)
-  updateVisibleStories();
+const fetchApiData = async () => {
+  await axios.get(import.meta.env.VITE_API_BASE_URL+'/topstories.json')
+      .then(res => {
+        stories.value = res.data.slice(0,10)
+        localStorage.setItem('stories', JSON.stringify(stories.value));
+      }).catch((err)=>{
+        console.log(err)
+      })
 }
-const updateVisibleStories = ()=>{
+
+
+const paginatedListData = (pageNumber = 1) => {
   const allStories = JSON.parse(localStorage.getItem('stories'));
-  let initialSortingTodos = allStories.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
-  visibleStories.value = initialSortingTodos
-  if(visibleStories.value.length == 0 && currentPage.value > 0){
-    updatePage(currentPage.value - 1);
-  }
+  visibleStories.value = allStories.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
 }
-updateVisibleStories()
+
+paginatedListData();
+
 const totalPages = computed(()=>{
   return Math.ceil(stories.value.length / pageSize.value)
 })
-console.log("total page",totalPages.value)
 
-const showpreviousLink = computed(()=>{
-  return currentPage.value == 0 ? false : true
-})
-const showNextLink = computed(()=>{
-  return currentPage.value == (totalPages.value - 1 ) ? false : true
-})
+const updatePage = (pageNumber)=>{
+  console.log(totalPages)
+  console.log(pageNumber)
+  if(totalPages < pageNumber || pageNumber < 1){
+    return false
+  } else {
+    currentPage.value = pageNumber;
+    console.log(currentPage.value)
+  }
+}
+
+
+// const updatePage = (pageNumber)=>{
+//   currentPage.value = pageNumber;
+//   console.log(currentPage.value)
+//   updateVisibleStories();
+// }
+// const updateVisibleStories = ()=>{
+//   const allStories = JSON.parse(localStorage.getItem('stories'));
+//   let initialSortingTodos = allStories.slice(currentPage.value * pageSize.value, (currentPage.value * pageSize.value) + pageSize.value)
+//   visibleStories.value = initialSortingTodos
+//   if(visibleStories.value.length == 0 && currentPage.value > 0){
+//     updatePage(currentPage.value - 1);
+//   }
+// }
+// updateVisibleStories()
+
+// console.log("total page",totalPages.value)
+//
+// const showpreviousLink = computed(()=>{
+//   return currentPage.value == 0 ? false : true
+// })
+// const showNextLink = computed(()=>{
+//   return currentPage.value == (totalPages.value - 1 ) ? false : true
+// })
 
 </script>
 <template>
