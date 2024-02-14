@@ -7,7 +7,6 @@ const replies = ref([])
 const fetchData =  ()=>{
     props.subComments?.data?.kids?.map(async(subCommentsId)=>{
       await axios.get(import.meta.env.VITE_API_BASE_URL +`/item/${subCommentsId}.json/`).then((response)=>{
-        console.log("reply",response.data)
         replies.value.push(response.data)
       })
     })
