@@ -25,7 +25,7 @@ fetchData()
             <small class="text-xs font-normal">{{new Date(reply.time * 1000).toString().split(" ").slice(0,5).join(' ')}}</small>
           </h3>
         </div>
-        <p class="text-gray-600 mt-2">
+        <p class="text-gray-600 mt-2 break-words">
          {{reply.text}}
         </p>
       </div>

@@ -3,7 +3,7 @@ import SubComments from "./SubComments.vue";
 const props = defineProps(['comments'])
 </script>
 <template>
-  <div class="flex flex-col w-full justify-between gap-2">
+  <div class="flex flex-col w-full justify-between gap-2 px-8 md:px-40">
     <div v-for="comment in props.comments" :key="comment" class="border rounded-md gap-6">
 
       <div class="p-3">
@@ -15,7 +15,7 @@ const props = defineProps(['comments'])
             <small class="text-xs font-normal">{{new Date(comment.data.time * 1000).toString().split(" ").slice(0,5).join(' ')}}</small>
           </h3>
         </div>
-        <p class="text-gray-600 mt-2">
+        <p class="text-gray-600 mt-2 break-words">
          {{comment?.data?.text}}
         </p>
         <button class="text-right text-blue-500">Reply</button>

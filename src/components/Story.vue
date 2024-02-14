@@ -32,20 +32,57 @@ onBeforeMount(() => {
 })
 </script>
 <template>
-  <p class="heading-text">Details</p>
-  <div class="border border-l-8 border-blue-800 shadow rounded-lg mt-8 mb-8">
-    <h5 class="text-3xl font-bold m-5">Details of {{id}}</h5>
-    <div class="p-2">
-      <p class="text-gray-700 font-medium ml-5 mt-3 text-xl">Title : <span class="text-lg font-bold">{{ story.title }}</span></p>
-      <p class="text-gray-700 font-medium ml-5 mt-3 text-xl">Author : <span class="text-lg font-bold">{{ story.by }}</span></p>
-      <p class="text-gray-700 font-medium ml-5 mt-3 text-xl">Score : <span class="text-lg font-bold">{{ story.score }}</span></p>
-      <p class="text-gray-700 font-medium ml-5 mt-3 text-xl">Time : <span class="text-lg font-bold">{{ new Date(story.time * 1000).toString().split(" ").slice(0,5).join(' ') }}</span></p>
-      <p class="text-gray-700 font-medium ml-5 mt-3 text-xl">Number of comments : <span class="text-lg font-bold">{{ comments.length }}</span></p>
-    </div>
-    <div class="bg-gray-100 pt-5 pb-5 border">
-      <p class="text-gray-700 text-bold text-sm ml-5 mr-5">
-        Footer content goes here
-      </p>
+  <div class="flex justify-center items-center mb-5">
+    <div class="bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg">
+      <div class="px-4 py-2 sm:px-6">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">
+          Details of {{id}}
+        </h3>
+      </div>
+      <div class="border-t border-gray-200">
+        <dl>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Title
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              {{ story.title }}
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Author
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              {{ story.by }}
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Score
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              {{story.score}}
+            </dd>
+          </div>
+          <div class="bg-white px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+              Time
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              {{ new Date(story.time * 1000).toString().split(" ").slice(0,5).join(' ') }}
+            </dd>
+          </div>
+          <div class="bg-gray-50 px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+            <dt class="text-sm font-medium text-gray-500">
+             No of Comments
+            </dt>
+            <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              {{comments.length}}
+            </dd>
+          </div>
+        </dl>
+      </div>
     </div>
   </div>
   <Comments :comments="comments"/>
