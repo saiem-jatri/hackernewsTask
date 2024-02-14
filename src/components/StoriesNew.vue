@@ -45,7 +45,7 @@ onBeforeMount(async () => {
 <template>
   <div>
     <div class="flex justify-center">
-    <div class="container w-full grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-x-2 md:gap-x-4 gap-y-2 md:gap-y-10">
+    <div class="container w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-x-2 md:gap-x-4 gap-y-2 md:gap-y-10">
       <div v-for="(story,index) in visibleStories" :key="index" class="card">
         <div class="face face1">
           <div class="content text-white flex flex-col justify-center items-center group">
