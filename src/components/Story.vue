@@ -33,7 +33,7 @@ onBeforeMount(() => {
 </script>
 <template>
   <div class="flex justify-center items-center mb-5">
-    <div class="bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg">
+    <div class="w-full md:w-1/2 bg-white max-w-2xl shadow overflow-hidden sm:rounded-lg">
       <div class="px-4 py-2 sm:px-6">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
           Details of {{id}}

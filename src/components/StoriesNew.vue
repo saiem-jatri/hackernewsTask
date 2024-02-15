@@ -8,6 +8,7 @@ const visibleStories = ref([])
 const currentPage = ref(0)
 const totalPages = ref(0)
 const loader = ref(false)
+const activePage = ref(1)
 const fetchApiData = async () => {
   loader.value = true
   await axios.get(import.meta.env.VITE_API_BASE_URL+'/topstories.json')
@@ -27,6 +28,7 @@ const paginatedListData = () => {
 }
 
 const updatePage = (pageNumber)=>{
+  activePage.value = pageNumber
   if(totalPages.value <= pageNumber){
     currentPage.value = totalPages.value - 1;
   } else {
@@ -69,7 +71,8 @@ onBeforeMount(async () => {
     <div class="container mx-auto">
       <div v-if="totalPages > 0" class="mt-10">
         <div class="flex gap-x-10 items-center justify-center">
-          <div v-for="page in totalPages" @click="updatePage(page)"  class="pagination-button">{{page}}</div>
+          <div :class="activePage === page ? 'bg-blue-500' : 'bg-purple-900'" v-for="page in totalPages" @click="updatePage(page)"  class="pagination-button">
+            {{page}}</div>
         </div>
       </div>
     </div>
