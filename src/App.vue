@@ -4,6 +4,7 @@ import ButtonComponent from "./components/practice/ButtonComponent.vue";
 import PersonComponent from "./components/practice/PersonComponent.vue";
 import MultiplleVmodel from "./components/practice/MultiplleVmodel.vue";
 import Checkbox from "./components/practice/Checkbox.vue";
+import RadioButton from "./components/practice/RadioButton.vue";
 import {reactive, ref} from "vue";
 const text = ref('hello')
 const person = reactive({
@@ -13,6 +14,8 @@ const person = reactive({
 const fname = ref('shahed')
 const lname = ref('Ahamed')
 const task = ref(false)
+
+const fruits = ref('apple')
 </script>
 
 <template>
@@ -27,6 +30,9 @@ const task = ref(false)
   <MultiplleVmodel v-model:fname="fname" v-model:lname="lname" />
 
   <Checkbox label="tast done or not"  v-model="task"/>
+  <p>{{fruits}}</p>
+  <RadioButton v-model="fruits" label="apple" value="apple"/>
+  <RadioButton v-model="fruits" label="orange" value="orange"/>
   <footer></footer>
 </template>
 
